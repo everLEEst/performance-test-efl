@@ -1,6 +1,11 @@
+#define _CRT_SECURE_NO_WARNINGS    // strcpy 보안 경고로 인한 컴파일 에러 방지
+
 #include <Elementary.h>
 #include <appcore-efl.h>
 #include "main.h"
+#include <stdio.h>
+#include <string.h>    // strcat 함수가 선언된 헤더 파일
+#include <stdlib.h>    // malloc, free 함수가 선언된 헤더 파일
 
 void
 _height_cb(void *data, Evas_Object *obj EINA_UNUSED, void *event_info EINA_UNUSED)
@@ -100,7 +105,35 @@ void create_buttons(appdata *ad)
 
 void create_laundry_card(appdata *ad, char* title, char *dur, float weight, Eina_Bool icon)
 {
+   char buf[128];
+   char buf2[128];
    Evas_Object *card = elm_box_add(ad->win);
+   evas_object_size_hint_weight_set(card, weight, EVAS_HINT_EXPAND);
+   evas_object_size_hint_align_set(card, EVAS_HINT_FILL, EVAS_HINT_FILL);
+   evas_object_show(card);
+	elm_box_horizontal_set(card, EINA_TRUE);
+
+   Evas_Object *title_label = elm_label_add(card);
+	evas_object_size_hint_weight_set(title_label, EVAS_HINT_EXPAND, 0);
+	evas_object_size_hint_align_set(title_label, EVAS_HINT_FILL, 0);
+   sprintf(buf, "%s,%s%s", "<font_size=30><align=center>", title, "</align></font_size>");
+   elm_object_text_set(title_label, buf)
+	evas_object_show(title_label);
+	elm_box_pack_end(card, title_label);
+
+   Evas_Object *dur_label = elm_label_add(card);
+	evas_object_size_hint_weight_set(dur_label, EVAS_HINT_EXPAND, 0);
+	evas_object_size_hint_align_set(dur_label, EVAS_HINT_FILL, 0);
+   sprintf(buf2, "%s,%s%s", "<font_size=20><align=center>", dur, "</align></font_size>");
+   elm_object_text_set(dur_label, buf2)
+	evas_object_show(dur_label);
+	elm_box_pack_end(card, dur_label);
+
+   if (icon)
+   {
+      //add icon here
+   }
+
    elm_box_pack_end(ad->laundryview, card);
 }
 
@@ -108,6 +141,51 @@ void create_laundry_card(appdata *ad, char* title, char *dur, float weight, Eina
 void create_dryer_card(appdata *ad, char* title, char *dur, float progress, Eina_Bool is_started)
 {
    Evas_Object *card = elm_box_add(ad->win);
+   evas_object_size_hint_weight_set(card, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+   evas_object_size_hint_align_set(card, EVAS_HINT_FILL, EVAS_HINT_FILL);
+   evas_object_show(card);
+	elm_box_horizontal_set(card, EINA_FALSE);
+
+   char buf[128];
+   char buf2[128];
+
+   Evas_Object *title_label = elm_label_add(card);
+	evas_object_size_hint_weight_set(title_label, EVAS_HINT_EXPAND, 0);
+	evas_object_size_hint_align_set(title_label, EVAS_HINT_FILL, 0);
+   sprintf(buf, "%s,%s%s", "<font_size=30><align=center>", title, "</align></font_size>");
+   elm_object_text_set(title_label, buf)
+	evas_object_show(title_label);
+	elm_box_pack_end(card, title_label);
+
+
+   Evas_Object *dur_progress_box = elm_box_add(card);
+   evas_object_size_hint_weight_set(dur_progress_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+   evas_object_size_hint_align_set(dur_progress_box, EVAS_HINT_FILL, EVAS_HINT_FILL);
+   evas_object_show(dur_progress_box);
+	elm_box_horizontal_set(dur_progress_box, EINA_TRUE);
+
+   if (dur_progress_box != null)
+   {
+      Evas_Object *dur_label = elm_label_add(dur_progress_box);
+      evas_object_size_hint_weight_set(dur_label, EVAS_HINT_EXPAND, 0);
+      evas_object_size_hint_align_set(dur_label, EVAS_HINT_FILL, 0);
+      sprintf(buf2, "%s,%s%s", "<font_size=20><align=center>", dur, "</align></font_size>");
+      elm_object_text_set(dur_label, buf2)
+      evas_object_show(dur_label);
+      elm_box_pack_end(dur_progress_box, dur_label);
+
+      Evas_Object *playIcon = elm_image_add(dur_progress_box);
+
+   }
+	elm_box_pack_end(card, dur_progress_box);
+
+   Evas_Object *progress =  elm_progressbar_add(card);
+	evas_object_size_hint_align_set(progress, EVAS_HINT_FILL, 0.5);
+	evas_object_size_hint_weight_set(progress, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	elm_progressbar_value_set(progress, progress);
+	evas_object_show(progress);
+	elm_box_pack_end(card, progress);
+
    elm_box_pack_end(ad->dryerview, card);
 }
 
@@ -127,8 +205,8 @@ void create_content(appdata *ad)
 
 	/* Create Scroller Box */
    Evas_Object *contentbox = elm_box_add(ad->contentview);
-   evas_object_size_hint_weight_set(ad->rootview, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-   evas_object_size_hint_align_set(ad->rootview, EVAS_HINT_FILL, EVAS_HINT_FILL);
+   evas_object_size_hint_weight_set(contentbox, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+   evas_object_size_hint_align_set(contentbox, EVAS_HINT_FILL, EVAS_HINT_FILL);
    evas_object_show(contentbox);
 	elm_box_horizontal_set(contentbox, EINA_TRUE);
 	elm_object_content_set(ad->contentview, contentbox);
