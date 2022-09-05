@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="6.5" package="performance-test-efl" version="0.1.0">
+	<label>performance-test-efl</label>
+	<author email="sh10233.lee@samsung.com" href="www.samsung.com">SangHyeon Lee</author>
+	<description>autofilld</description>
+	<ui-application appid="performance-test-efl" exec="/usr/apps/performance-test-efl/bin/performance-test-efl" multiple="false" nodisplay="false" taskmanage="true" type="capp">
+		<label>performance-test-efl</label>
+	</ui-application>
+</manifest>
