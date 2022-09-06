@@ -11,8 +11,6 @@ sample_inc = [
    include_directories('inc'),
 ]
 
-subdir('res')
-
 executable('performance-test-efl', 'src/main.c',
            dependencies: sample_deps,
            include_directories: sample_inc,
